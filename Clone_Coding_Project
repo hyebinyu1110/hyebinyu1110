@@ -1,0 +1,35 @@
+const loginForm = document.querySelector("#login-form"); // insert the HTML elemement to variable, loginForm, which is id === login-form
+const loginInput = document.querySelector("#login-form input");// insert the HTML elemement to variable, loginInput, which is direct child of id === login-form
+const greeting = document.querySelector("#greeting"); // insert the HTML elemement to variable, greeting, which is id === greeting
+
+const HIDDEN_CLASSNAME = "hidden"; // save the class name, hidden to variable  HIDDEN_CLASSNAME to avoid any typo later on
+const USERNAME_KEY = "username"; // save the username to variable USERNAME_KEY to avoid any typo later on
+
+function onLoginSubmit(event) {
+
+    event.preventDefault(); // stop the browser's default action, which is refresing the page
+    loginForm.classList.add(HIDDEN_CLASSNAME); // we hide the form again
+    const username = loginInput.value; // save the value of loginInput to varaiable, username  
+    localStorage.setItem(USERNAME_KEY, username); // save the variable, username with key name, USERNAME_KEY to localStorage
+    paintGreeings(username); // we call the function, paintGreetings with argument, username
+
+}
+
+
+function paintGreeings(username){ // takes one argument, which is username
+
+    greeting.innerText= `Hello ${username}`; // put text  within backtick as a property of greeting
+    greeting.classList.remove(HIDDEN_CLASSNAME); // remove class hidden in element
+}
+
+const savedUserName = localStorage.getItem(USERNAME_KEY); // get the value of key, USERNAME_KEY and save it the variable, savedUserName
+
+
+if (savedUserName === null) { // if savedUserName is not saved in local storage
+
+    loginForm.classList.remove(HIDDEN_CLASSNAME); // remove the class, hidden from loginForm
+    loginForm.addEventListener("submit", onLoginSubmit); // and implement function, onLoginSumbit above
+
+}else{ // if savedUsername exists in localStorage
+    paintGreeings(savedUserName); // call the function paintGreetings without argument since we know that username exists in localStorage
+}
